@@ -1,0 +1,804 @@
+<!DOCTYPE html>
+<!-- ***************************************************************
+* Diese Datei gehört zum  WebEng-Kurs an der HNU
+*    Copyright (c) by Marina Ganser & Silvia Drago
+******************************************************************** -->
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Speiseplan</title>
+    <!-- Verknüpfung mit clients und css-stylesheet -->
+    <link rel="stylesheet" href="stylesheet/speisekarte.css">
+    <script src="../client-js/jquery-3.6.4.min.js"  type="text/javascript"></script>
+    <script src="../client-js/jquery-validate-1.19.3.min.js" type="text/javascript">
+    </script>
+    <script src="../client-js/jquery-ui-1.13.2.custom/jquery-ui.js" type="text/javascript"></script>
+    <link rel="stylesheet" href="../client-js/jquery-ui-1.13.2.custom/jquery-ui.css">
+    <script src="../client-js/jquery-extensions.js" type="text/javascript"></script>
+  </head>
+
+  <body>
+    <!-- grid-container, damit header, content und footer einen zugewiesenen platz auf der website haben -->
+    <div class="grid-container">
+      <!-- Header -->
+        <header class="header">
+        <a href="index.html">
+          <img class="" id="logo" src="../index-pics/Logo2.svg" alt="Logo" width="80" height="80" />
+        </a>
+        <nav class="navigation">
+          <ul>
+            <li><a id="home" href="/index.html">Home</a></li>
+            <li><a id="speisekarte" href="/views/css_speiseplanFunktionierendMitAllem.html" class="active">Speisekarte</a></li>
+            <li><a id="uteam" href="/Team/team.html">Team</a></li>
+            <li><a id="katzen" href="/cattos/katzen-CRUD-aendern.html">Katzen</a></li>
+          </ul>
+        </nav>
+        <form id="search">
+          <input id="searchbar" class="rund" type="text" placeholder="Search...">
+        </form>
+        
+      </nav>
+        <button id="loginButton"   onclick="wechselnMaske('loginMaske','')">Login</button>
+        <button id="logoutButton" onclick="ausloggen">Logout</button>
+        <!-- Login und Logout Buttons, beim Login wird auf loginMaske gewechselt beim Logout wird eine Abfrage durchgeführt, ob wirklich ausgeloggt werden soll  -->
+      </header> 
+
+
+      <!-- loginMaske als form mit action javascript, sodass beim klicken auf den anmeldungButton zunächst validiert wird -->
+      <form id="loginMaske" action="javascript:" class="maske middle1">
+        
+        <div>
+          <h2 class="ueberschriften">Logge Dich ein!</h2>
+        </div>
+        
+        
+        <!-- Initialisierung labels und input-Felder  -->
+        <div id="inputEingabe">
+          <div id="eingabe">
+            <label>Benutzername</label> 
+            <input id="inputName" type="text" name="name" placeholder="Gib Deinen Namen ein"/>
+          </div>
+          <div id="eingabe">
+            <label>Passwort</label> 
+            <input id="inputPasswort" type="password" name="passwort" placeholder="Gib Dein Passwort ein"/>
+          </div>
+        </div>
+        
+        <!-- anmelde-Button, beim klicken wird funktion save() aufgerufen -->
+        <div>
+        <button id="anmeldungButton" type="submit" onclick="save()">Anmelden</button>
+        </div>
+        
+      </form>
+
+  
+  
+      <!-- Initialisierung eingabeMaske -->
+      <form id="eingabeMaske" action="javascript:" class="maske middle1">
+
+        <!-- je nach Nutzung Eingabe oder Änderung wird ein anderer Titel angezeigt -->
+        <h2 id="eingabeTitel" class="ueberschriftenEingabe">Gib Gerichte ein!</h2>
+        <h2 id="ändernTitel" class="ueberschriftenEingabe">Gerichte ändern!</h2>
+
+        <!-- eingabe form-->
+        <div id="eingabe" class="eingabeGrid">
+          <div class="eingabeBoxA">
+              <label class="eingabeLabel">Bild</label> 
+             <input id="bild" class="eingabeInput" type="text" placeholder="Gib eine Bild-URL ein"/>
+          </div>
+          
+          <div class="eingabeBoxB">
+            <label class="eingabeLabel">Name</label> 
+            <input id="name" class="eingabeInput" type="text" placeholder="Gib einen Namen ein" name="gerichtName" />
+          </div>
+  
+          <div class="eingabeBoxC">
+            <label class="eingabeLabel">Beschreibung</label> 
+            <textarea id="beschreibung" class="eingabeInput" type="text" placeholder="kurze Beschreibung" name="gerichtBeschreibung"></textarea>
+          </div>
+  
+          <div class="eingabeBoxD">
+            <label class="eingabeLabel">Allergene</label>
+            <div id="allergenCheckboxen" class="eingabeInput">
+              <div>
+                <label for:"gluten">Gluten</label> 
+                <input id="gluten" type=checkbox name=checkAllergene value="Gluten"/>
+              </div>
+              <div>
+                <label for:"lactose">Lactose</label> 
+                <input id="lactose" type=checkbox name=checkAllergene value="Lactose"/>
+              </div>
+                    
+              <div>
+                <label for:"fructose">Fructose</label> 
+                <input id="fructose" type=checkbox name=checkAllergene value="Fructose"/>
+              </div>
+              <div>
+                <label for:"nüsse">Nüsse</label> 
+                <input id="nüsse" type=checkbox name=checkAllergene value="Nüsse"/>
+              </div>
+            </div>
+          </div>
+  
+          <div class="eingabeBoxE">
+            <label class="eingabeLabel">Preis</label>
+            <input class="eingabeInput" id="preis" type="text" placeholder="Preis?"/>
+          </div>
+        </div>
+        
+        <div id="progressbar"></div>
+        <!-- beim Klicken wird durch das Action-Attribut im form-tag entweder saveanlegenInDB() oder saveAendernInDB() aufgerufen -->
+        <button class="eingabeLabel" id="speichernButton" type="submit">Speichern</button>
+             
+      </form>
+    
+  
+      
+      <!-- Datenmaske mit Content -->
+      <div id="datenMaske" class="maske middle1">
+
+        <div id="dialog-confirm" title="Das Gericht wirklich löschen?">
+          <p><span class="ui-icon ui-icon-alert" style="float:left; margin:12px 12px 20px 0;"></span></p>
+        </div>
+
+        <!-- slideshow wurde mit Hilfe von W3Schools erarbeitet, Quelle: https://www.w3schools.com/howto/howto_js_slideshow.asp -->
+        
+        <!--  Funktion von (flex)Containern ebenfalls über W3Schools erlernt
+        Quelle: https://www.w3schools.com/css/css3_flexbox_container.asp -->
+        
+        <!-- slideshow Container, enthält die Elemente mit jeweils Bild und Text -->
+        <div class="slideshowContainer">
+          <div class="slideshowElemente">
+            <div class="slideshowText">
+              <h1>Speisekarte des Katzencafés🐈☕️</h1>
+              <p>Entdecke unsere vielfaltige Auswahl der tradionellen Katzencafé Speisen! Und genieße sie beim Schmusen der Katzen. Egal, worauf Du gerade Lust hast: Von Hauptspeise bis zu Dessert - wir haben alles was dein Herz begeehrt!🤍 </p>
+            </div>
+            <div style="background-image:url('pics/KatzeTasse.jpeg')" alt="KatzeTasse')" class="slideshowBilder">
+            </div>
+          </div>
+  
+          <div class="slideshowElemente">
+            <div class="slideshowText">
+            <h1>Speisekarte des Katzencafés🐈☕️</h1>
+            <p>Entdecke unsere vielfaltige Auswahl der tradionellen Katzencafé Speisen! Und genieße sie beim Schmusen der Katzen. Egal, worauf Du gerade Lust hast: Von Hauptspeise bis zu Dessert - wir haben alles was dein Herz begeehrt!🤍 </p>
+            </div>
+            <div style="background-image:url('pics/Katzencafe.jpeg')" alt="Katzencafe')" class="slideshowBilder"> 
+            </div>
+          </div>
+          
+          <div class="slideshowElemente">
+            <div class="slideshowText">
+              <h1>Speisekarte des Katzencafés🐈☕️</h1>
+              <p>Entdecke unsere vielfaltige Auswahl der tradionellen Katzencafé Speisen! Und genieße sie beim Schmusen der Katzen. Egal, worauf Du gerade Lust hast: Von Hauptspeise bis zu Dessert - wir haben alles was dein Herz begeehrt!🤍 </p>
+            </div>
+            <div style="background-image:url('pics/KatzeLiegt.jpeg')" class="slideshowBilder">
+            </div>
+          </div>
+        </div>
+
+        <!-- icons und Daten als Gerichte stellen angebot dar -->
+        <div class="angebot">
+
+          
+    <!-- Icons vom Frühstück, Mittagessen, Abendessen und Nachtisch, container mit bildern und text-->
+          <div class="iconscontainer">
+            <div>
+              <img src="/speisekarte/pics/Breakfast-icon.png"              class="icons" alt="Breakfast"/>
+              <p style="font-weight: bold;">
+                Frühstück
+              </p>
+            </div>
+            
+            <div>  
+              <img src="/speisekarte/pics/Lunch-icon.png" class="icons" alt="Lunch"/>
+              <p style="font-weight: bold;">
+                Mittagessen
+              </p>
+            </div>
+    
+            <div>
+              <img src="/speisekarte/pics/Dinner-icon.png" class="icons" alt="Dinner"/>
+              <p style="font-weight: bold;">
+                Abendessen
+              </p>
+            </div>
+    
+            <div>
+            <img src="/speisekarte/pics/Dessert-icon.png" class="icons" alt="Dessert"/>
+              <p style="font-weight: bold;">
+                Nachtisch
+              </p>
+            </div>
+            
+          </div>
+
+          
+          <!-- hier werden die Datenobjekte eingefügt und angezeigt -->
+          <div id="datenMaskeZeilen" class="speisekarte">
+          </div>
+
+          
+          <!-- maske, die für admins zum Anlegen von Objekten sichtbar wird -->
+          <div id="anlegenContainer" class="mask">
+            <div class="admin">
+              <h3>Neue Gerichte anlegen:</h3>
+            </div>
+          <div>
+          <!-- button anlegen, beim klicken wird wechseln maske mit der eingabemaske aufgerufen -->
+          <button id="anlegenButton" class="admin" onclick="wechselnMaske('eingabeMaske','')">Anlegen</button>
+          </div>
+          
+        </div>
+        
+        
+        </div>
+
+
+        <!-- Tisch reservieren, button inkl. Text -->
+        <div class="container1 middle">
+          <div>
+        <h5 id="tischüberschrift">Reserviere Dir einen Tisch! 🍽️ </h5>
+            <div class="centered" style="color: white; font-family: open sans;">
+              Sichere Dir einen Platz und erlebe die vielfalt unserer Küche!
+            </div>
+          </div>
+          <div class="button-container">
+              <button class="button-tisch" onclick="wechselnMaske('baustellenMaske','')">
+                  Tisch reservieren
+              </button>
+             
+          </div>
+        </div>
+      </div>
+
+
+      
+      <!-- hier wird noch gearbeitet -->
+      <div class="maske middle1" id="baustellenMaske">
+        <div>Hier ist Baustelle</div>
+        <button class="zurueckButton" onclick="wechselnMaske('datenMaske','')">Zurück</button>
+      </div>
+
+      
+      
+      <!--Footer mit Impressum, Öffnungszeiten & Socails-->
+      <footer>
+      <!--Impressum Content/Infos-->
+          <div class="footer-content1" id="footercontent">
+             <span class="bold"> Impressum</span><br>
+             Katzenstraße 33<br>
+             89077 Ulm<br>
+             Tel: 015218676<br>
+             E-Mail: info@cats-n-coffee.de<br>
+          </div>
+           <!--Öffnungszeiten Content/Infos-->
+          <div class="footer-content2" id="footercontent">
+           <span class="bold"> Öffnungszeiten</span><br>
+            Montag bis Freitag: 8:00 - 18:00 Uhr<br>
+            Samstag, Sonn- und Feiertag: 8:00 - 14:00<br>
+          </div>
+           <!--Socials Content/Infos-->
+          <div class="footer-content3" id="footercontent">
+            <span class="bold">Socials</span><br>
+              <img src="/cattos/bilder/icons8-instagram-32.svg" alt="" id="insta"/>
+              <img src="/cattos/bilder/icons8-tick-tack.svg" alt="" id="tiktok"/><br>
+          </div> 
+       </footer>
+    
+    </div>
+
+    
+    <script>
+
+       // Konstruktor für das Erstellen von neuen Objekten (Gerichten)
+      function Gericht(id, bild, name, beschreibung, allergene, preis){
+        console.log("Gericht mit " + id + ", " + bild + ", " + name + ", " + beschreibung + ", " + allergene + ", " + preis)
+       this.bild = bild;
+       this.name = name;
+       this.beschreibung = beschreibung;
+       this.allergene = allergene;
+       this.preis=preis;
+      this.id=id;
+      }
+
+      
+      function anlegenInDB(){
+       // Funktion zum Anlegen neuer Datenobjekte in die DB
+       console.log("anlegenInDB")
+       /*  Auslesen der Benutzerdaten */
+       var bild=$("#bild").val();
+       var name=$("#name").val();
+       var beschreibung=$("#beschreibung").val();
+       var allergene="";
+       // Auslesen der Checkboxen als Schleife und Zusammenfügen als ein String
+       $("#allergenCheckboxen input:checked").each(function(index){
+       allergene=$(this).val() + ", " + allergene;
+       }); 
+       console.log("allergene: " +allergene);
+       // damit am Ende das Komma wegfällt, muss alles von allergene übernommen werden, bis auf die letzen beiden Zeichen (Komma und Leerzeichen)
+       allergene = allergene.slice(0, allergene.length -2)
+       var preis=$("#preis").val();
+       /* Neues Gericht mit Gericht-Konstruktor erstellen */
+       var neuesGericht = new Gericht("", bild, name, beschreibung, allergene, preis);
+       /* Einfügen dieses Gerichts in das Array */
+       datenArray.push(neuesGericht);
+        $.post("/speiseplan/", neuesGericht, function(data){
+          wechselnMaske("datenMaske",'');
+           // neues Objekt auslesen
+           lesenAusDB();
+          aktualisierenDOM();
+        })
+        .fail(function(data){
+          errorAlert("DELET", data.responseText);
+        });
+       //Initialisieren der Eingabemaske
+       $("#bild").val("");
+       $("#name").val("");
+       $("#beschreibung").val("");
+       $("#allergenCheckboxen input:checked").each(function(){
+      allergene=$(this).prop("checked", "");
+      });
+       // alle checkboxen müssen auf einen leeren Wert gesetzt werden, damit sie nicht gecheckt aussehen
+       $("#allergene").val("");
+       $("#preis").val("");
+      
+         /* Kontrolliere, ob das Array wirklich erweitert wurde */
+       console.table(datenArray);
+       
+      }
+
+      
+      function lesenAusDB() {
+       console.log("lesenAusDB");
+         // leeren von bisherigen Inhalten
+        $("#datenMaskeZeilen").empty();
+
+            $.get("/speiseplan",function(data){
+              datenArray=data;
+
+              // Schleife 
+               var gericht = "";
+                for (var i = 0; i < datenArray.length; i++) {
+                  // Erstellung der sichtbaren Gerichte für jedes objekt im Array
+                    gericht = `${erzeugenGerichtSpalten(datenArray[i], i)}`
+                  // anhängen an die datenMaske
+                  $("#datenMaskeZeilen").append(gericht);
+                 }
+               })
+        .fail(function(data){
+          errorAlert("DELET", data.responseText);
+        });
+            }
+        
+    
+      function erzeugenGerichtSpalten(objekt, i) {
+        console.log("erzeugenGerichtSpalten");
+        var gerichtSpalten = "";
+         // auszeichnung der gerichte für jedes objekt 
+        gerichtSpalten = `
+           <div class="gericht">
+           <div class ="bilder" style="background-image: url('${objekt.bild}')"></div>
+           <div class="text">
+           <h2>${objekt.name}</h2>
+           <p>${objekt.beschreibung}</p>
+           <p>${objekt.allergene}</p>
+           <p>${objekt.preis}</p>
+           <button id="ändernButton" class="admin worker" onclick="wechselnMaske('eingabeMaske',${i})">
+           Ändern
+           </button>
+           <button id="löschenButton" class="admin" onclick="loeschenInDB(${i})">
+           Löschen
+           </button>
+           </div>
+           </div>
+          `
+        // änderung: buttons werden in funktion erzeugenGerichtSpalten() eingefügt, damit sie im selben div wie die eigenschaften des objekts stehen und nicht im lesenAusDB() noch darunter angefügt werden (sieht nicht einheitlich aus). Dafür musste man aber den index von lesenAusDB() mit übergeben, weil die console sonst angezeigt hat, dass i nicht definiert ist (i steht ja nur in lesenAusDB()). Dann hat es geklappt :)
+        return gerichtSpalten;
+      }
+    
+    
+      function aendernInDB(index) {
+        console.log("aendernInDB mit " + index);
+        /*  Auslesen der Benutzerdaten */
+         var bild=$("#bild").val();
+         var name=$("#name").val();
+         var beschreibung=$("#beschreibung").val();
+         var allergene="";
+          // auslesen der checkboxen mit #allergenCheckboxen selektor der ungeordneten Liste (damit alle checkbox nachfahren der Liste gecheckt werden)
+        $("#allergenCheckboxen input:checked").each(function(index){
+        allergene=$(this).val() + ", " + allergene;
+        });
+        console.log('allergene: '+ allergene);
+        allergene= allergene.slice(0, allergene.length -2);
+        // damit am Ende das Komma wegfällt, muss alles von allergene übernommen werden, bis auf das letzte Zeichen
+        var preis=$("#preis").val();
+         
+        // Neues Gericht mit Gericht-Konstruktor erstellen
+        geaendertesGericht =  new Gericht("", bild, name, beschreibung, allergene, preis);
+        // Ändern des Gerichts in die Datenbank
+        $.put("/speiseplan/" + datenArray[index].id, geaendertesGericht, function(data){
+
+          lesenAusDB();
+          wechselnMaske("datenMaske",""); 
+          aktualisierenDOM();
+        })
+          .fail(function(data){
+          errorAlert("DELET", data.responseText);
+        });
+       
+      }
+    
+    
+      function loeschenInDB(index) {
+        console.log("loeschenInDB mit"+index);
+        // dialogfenster beim aufruf der löschen funktion einblenden und nach gericht an index stelle fragen
+        $("#dialog-confirm").css("display","block");
+        $("#dialog-confirm").html(`Wirklich das Gericht ${datenArray[index].name} löschen?`)
+        $( function() {
+          $( "#dialog-confirm" ).dialog({
+            resizable: false,
+            height: "auto",
+            width: 400,
+            modal: true,
+            buttons: {
+              "Gericht löschen": function() {
+                // wenn auf löschen gedrückt wird, soll das element gelöscht werden aus der datenbank und dann nach aktualisieren und lesen das window wieder geschlossen werden
+                $.delete("/speiseplan/" +datenArray[index].id, function(data){
+
+                  aktualisierenDOM();
+                  lesenAusDB();
+                })
+                .fail(function(data){
+                  errorAlert("DELET", data.responseText);
+                });
+
+                $( this ).dialog( "close" );
+              },
+              "Abbrechen": function() {
+                // beim abbrechen soll das fenster einfach geschlossen werden
+                $( this ).dialog( "close" );
+              }
+            }
+          });
+        });
+      }
+    
+    
+      function wechselnMaske(sichtbareMaske, zeile){
+        if(zeile===""){
+           //Anlegen
+          console.log(`wechselnMaske auf ${sichtbareMaske}`);
+          $("#bild").val("");
+          $("#name").val("");
+          $("#beschreibung").val("");
+          $("#allergenCheckboxen input:checked").each(function(){
+          allergene=$(this).prop("checked", "");
+          });
+      // vor und nach Anlegen der Datenobjekte werden die einzelnen Felder leer gesetzt, bei den checkboxen werden wieder alle gecheckten durchlaufen und diesmal auf einen leeren Wert gesetzt, damit sie nicht ausgewählt erscheinen, wenn man ein neues objekt anlegen möchte
+          $("#allergene").val("");
+          $("#preis").val("");
+        // in der eingabemaske wird nach Betätigung des Speichern-Knopfs die Funktion saveanlegenInDB() aufgerufen
+          $("#eingabeMaske").attr("action", "javascript:saveAnlegenInDB()");
+        // beim Anlegen soll der eingabeTitel erscheinen und der ändernTitel verschwinden
+          $("#eingabeTitel").show();
+          $("#ändernTitel").hide();
+        
+        }else {
+           //Ändern
+           console.log(`wechselnMaske auf ${sichtbareMaske}, zeile=${zeile}`);
+          // einfügen der werte des objekts in die input felder
+          $("#bild").val(datenArray[zeile].bild);
+          $("#name").val(datenArray[zeile].name);
+          $("#beschreibung").val(datenArray[zeile].beschreibung);
+          $("#allergene").val(datenArray[zeile].allergene);
+          $("#preis").val(datenArray[zeile].preis);
+        // wenn in der eingabemaske auf Speichern gedrückt wird, soll aenderImArray() aufgerufen werden
+          $("#eingabeMaske").attr("action", "javascript:saveAendernInDB(" + zeile + ")");
+        // eingabetitel soll verschwinden und ändernTitel erscheinen
+          $("#eingabeTitel").hide();
+          $("#ändernTitel").show();
+        }
+      
+       // sichtbareMaske soll gezeigt werden, restliche Masken unsichtbar
+          $(".maske").hide();
+          $("#" + sichtbareMaske).show();
+      }
+    
+      
+      function wechselnLogKnopf(eingeloggt) {
+        console.log("setzenLogKnopf mit " + eingeloggt);
+        if (eingeloggt) {
+        console.log("\t eingeloggt");
+         // wenn eingeloggt true ist, sollen der logoutButton sichtbar und der loginButton unsichtbar gemacht werden und auf die Datenmaske gewechselt werden
+        $("#loginButton").hide();
+        $("#logoutButton").show();
+        wechselnMaske("datenMaske","");
+        
+        } else {
+        console.log("\t nicht eingeloggt");
+         // wenn eingeloggt false ist, sollen der logoutButton sichtbar und loginButton unsichtbar gemacht werden, danach Wechsel auf datenmaske
+        $("#loginButton").show();
+        $("#logoutButton").hide();
+        wechselnMaske("datenMaske","");
+        }
+      }
+
+
+      function einloggen() {
+        console.log("WebApp: einloggen");
+        //Das eigentliche Einloggen --> User macht das
+        var daten={
+          "user":$("#inputName").val(),
+          "password":$("#inputPasswort").val()
+        };
+        $.post("/login", daten, function(data){
+          //Asynchrone post-Funktion
+          if(data===true){
+            console.log("Einloggen hat geklappt")
+            //Einloggen hat geklappt
+            aktualisierenDOM();
+            wechselnMaske("datenMaske","");
+          }else{
+            //Einloggen hat nicht geklappt
+            alert("Deine Benutzerdaten waren falsch. Versuche es nochmal.");
+          }
+        })
+        .fail(function(data){
+          errorAlert("POST (einloggen)", data.responseText);
+        });
+      }
+
+      
+      function errorAlert(type, data){
+        console.log('Fehlernachricht vom Server nach ${type}-Request: ${JSON.stringify(data).toString()}');
+          alert('Fehlernachricht vom Server nach ${type}-Request: ${JSON.stringify(data).toString()}');
+      }
+
+      
+      function ausloggen() {
+        console.log("WebApp: ausloggen");
+        //Das Ausloggen
+        $.get('/logout', function(data){
+          if(data===true){
+            //Ausloggen funktioniert
+            aktualisierenDOM();
+            wechselnMaske("datenMaske", "");
+          }else{
+            //Ausloggen funktioniert nicht
+            alert("Ausloggen nicht möglich. Versuche es nochmal.");
+          }
+
+        })
+
+      }
+
+      
+      function aktualisierenDOM() {
+        console.log("WebApp: aktualisierenDOM");
+        //Ermittle Login-Status
+        var eingeloggt=false;
+        $.get("/service_istEingelogged", function(data){
+          console.log("Webapp: aktualisierenDOM: " + data);
+          eingeloggt=data;
+          setzenLogKnopf(eingeloggt);
+          setzenBerechtigungen(eingeloggt);
+        })
+      }
+
+
+      function setzenBerechtigungen(eingeloggt) {
+        console.log("Webapp: Berechtigungen setzen mit " + eingeloggt);
+
+        if (eingeloggt) {
+          console.log("eingeloggt")
+          //Rollenabfrage
+          $.get("/service_rollenAbfrage", function(rollen){
+            var rollenArray = rollen.toString().split(",");
+            for (i=0; i<rollenArray.length; i++){
+              console.log(rollenArray[i])
+              $("." + rollenArray[i]).attr(rollenArray[i] + "Visible", true);
+            }
+               
+            
+        })
+        } else {
+        //nicht eingeloggt
+          $(".worker").attr("workerVisible", false);
+          $(".admin").attr("adminVisible", false);
+        }
+
+      }
+
+
+      function setzenLogKnopf(eingeloggt) {
+            console.log("NEU: setzenLogKnopf mit " + eingeloggt);
+            if (eingeloggt) {
+                console.log("\t eingeloggt");
+              // wenn eingeloggt true ist, soll der logoutButton erscheinen und beim nächsten Klick auf den logoutButton die Funktion ausloggen() aufgerufen werden
+              $("#loginButton").hide();
+              $("#logoutButton").show();
+              $("#logoutButton").attr("onclick","ausloggen()");
+
+            } else {
+                console.log("\t nicht eingeloggt");
+                // Aufgabe: Selektiere den LogKnopf, setze die Knopfbezeichnung auf "Loggen" und ändere das onclick-Attribut so, dass es beim nächsten Klick die Funktion wechselnMaske mit dem Parameterwert "loginMaske" aufruft!
+              $("#logoutButton").hide();
+              $("#loginButton").show();
+              $("#loginButton").attr("onclick","wechselnMaske('loginMaske','')");
+            }
+      }
+
+      
+      function save(){
+        // überprüft, ob die loginMaske valide ist: wenn ja, soll eingeloggt werden und in beiden fällen jeweils eine Nachricht ausgegeben werden
+        if ($("#loginMaske").valid()){
+          console.log("Eingabe gültig");
+          alert("Eingabe gültig");
+          einloggen();
+        }else{
+          alert("Eingabe ungültig");
+        }
+      }
+
+      
+      function saveAnlegenInDB(){
+        // überprüft, ob die eingabeMaske valide ist: wenn ja, soll anlegenInDB() aufgerufen werden
+        if ($("#eingabeMaske").valid()){
+          console.log("Eingabe gültig");
+          alert("Eingabe gültig");
+          anlegenInDB();
+        }else{
+          alert("Eingabe ungültig");
+        }
+      }
+
+      
+      function saveAendernInDB(zeile){
+        // überprüft, ob die eingabeMaske valide ist: wenn ja, soll aendernInDB() aufgerufen werden
+        console.log("saveAendernInDB mit " +zeile);
+        if ($("#eingabeMaske").valid()){
+          console.log("Eingabe gültig");
+          alert("Eingabe gültig");
+          aendernInDB(zeile);
+        }else{
+          alert("Eingabe ungültig");
+        }
+      }
+       
+
+      $("#loginMaske").validate({
+        // loginMaske wird überprüft, errorElement ist ein span
+        errorElement: "span",
+        rules: { 
+          "name": {
+            required: true,
+            minlength: 2,
+            maxlength: 20,
+            },
+          
+
+          "passwort":{
+            required: true,
+            minlength: 1,
+          },
+        },
+
+        
+        messages: {
+        "name":{
+          required: "Bitte Namen eingeben",
+          minlength: "Bitte mindestens 2 Zeichen eingeben",
+          maxlength: "Bitte maximal 20 Zeichen eingeben"
+        },
+
+        "passwort":{
+          required: "Bitte Passwort eingeben",
+          minlength: "Bitte mindestens 1 Zeichen eingeben"
+        },
+ 
+        }  
+      });
+
+
+      $("#eingabeMaske").validate({
+        // regeln und Fehlermeldungen für die eingabeMaske festlegen
+        errorElement: "span",
+        rules:{
+          "gerichtName":{
+            required: true,
+            minlength: 2
+          },
+          "gerichtBeschreibung":{
+            required: true,
+            maxlength: 150
+          }
+        },
+        messages:{
+        "gerichtName":{
+          required: "Bitte Name des Gerichts eingeben",
+          minlength: "Bitte mindestens 2 Zeichen eingeben"
+        },
+          "gerichtBeschreibung":{
+          required: "Bitte Beschreibung des Gerichts eingeben",
+          maxlength: "Bitte maximal 150 Zeichen eingeben"
+          }
+        }
+      
+      });
+      
+      // slideshow erarbeitet unter zuhilfenahme von W3Schools
+      // Quelle: https://www.w3schools.com/howto/howto_js_slideshow.asp
+
+      // index wird festgelegt und zunächst auf 0 gesetzt, muss außerhalb sein (da sonst in der funktion immer neu auf 0 gesetzt wird)
+      let slideIndex = 0;
+      // Ausführung der Funktion slideShow()
+      slideShow();
+      
+      function slideShow(){
+        // durchlaufvariable i
+        var i;
+        // slides sind alle elemente, die wir im html mit der klasse slideshowElemente initialisiert haben
+        var slides = $(".slideshowElemente");
+        // durchlauf der variablen i durch die slides, jedes element wird auf display: none, also nicht sichtbar gesetzt, bis alle slides durchlaufen sind
+        for (i = 0; i < slides.length; i++) {
+          slides[i].style.display="none";
+        }
+        // der slideIndex wird immer um eins erhöht, damit jedes element mal dran ist, bis alle durchlaufen sind. dann wird er wieder auf 1 gesetzt, um mit dem ersten slide zu beginnen
+        slideIndex++;
+        if(slideIndex>slides.length){
+          slideIndex = 1;
+        }
+        // die slides werden dann beginnend mit dem ersten element angezeigt (an der Stelle vom slideindex-1, damit element an stelle 0 zuerst kommt und nicht das an der Stelle 1)
+        slides[slideIndex-1].style.display= "block";
+        // setTimeout lässt die Funktion um 5 Sekunden verzögert nochmal durchführen, sodass alle fünf Sekunden ein neues Element sichtbar wird durch slideShow()
+        setTimeout(slideShow, 5000);
+        
+      }
+
+
+      //mithilfe der API Dokumentation der progressbar und Dateien aus dem Tutorium zu progressbars erarbeitet
+      $(function() {
+       function updateProgress(){
+        //maximale und aktueller Wert der Progressbar
+        var maximaleFelder = 4;
+        var aktuelleFelder = 0;
+        //für jedes Feld mit Eingabe wird aktuelles Feld hochgezählt
+        $(".eingabeInput").each(function(){
+          if($(this).val()!=""){
+            aktuelleFelder++;
+          }
+      });
+         //wenn eine checkbox angeklickt wird, wird aktuelles Feld hochgezählt
+         for(i=0; i<allergenCheckboxen.length; i++){
+           if(allergeneCheckboxen[i].checked){
+             aktuelleFelder++;
+           }
+         }
+        // der Prozentsatz ist dann aktuelle Felder durch maximale Felder mal 100
+        var prozent = aktuelleFelder / maximaleFelder *100;
+        $("#progressbar").progressbar({value:prozent});
+        // $("#progressbar").text(prozent +" %");
+        }
+        // die eingabeFelder und Checkboxen werden auf input und click geprüft und dann jeweils die progressbar aktualisiert
+        $(".eingabeInput").on("input", function(){
+          updateProgress();
+        })
+        $(":checkbox").on("click", function(){
+          updateProgress();
+        })
+      })                     
+      
+
+
+
+      aktualisierenDOM();
+      // Lesen der Elemente aus der Datenmaske
+      lesenAusDB();
+      // Anzeigen der Datenmaske, alles zu Beginn des Aufrufs
+      wechselnMaske("datenMaske","");
+
+      
+    </script> 
+  </body>
+</html>

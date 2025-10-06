@@ -1,0 +1,683 @@
+/* ***************************************************************
+* Diese Datei gehört zum  WebEng-Kurs an der HNU
+*    Copyright (c) by Marina Ganser & Silvia Drago
+******************************************************************** */
+
+/* flexboxen wurden auf Grundlage von Tutorials von W3Schools gemacht
+Quelle: https://www.w3schools.com/css/css3_flexbox.asp */
+
+/* 
+Benuzte Farben:
+#293133 
+#c0c5ce
+white
+Schriftart überschrift: Sitka Banners
+Schriftart text: Open Sans
+*/
+
+/* body */
+/*  Hintergrund der Unterseite verschönern */
+body{
+  background-color: #c0c5ce;
+  margin: 0px;
+  padding: 0px;
+}
+
+
+
+/* initial sollen alle mit folgenden Klassen belegten tags unsichtbar sein */
+.admin, .worker, .user{
+  display:none;
+}
+
+  /* Wenn bei berechtigungsabhängigen Tags das entsprechende Attribut wahr ist, dann wird es sichtbar */
+.admin[adminVisible=true], .worker[workerVisible=true] {
+  /* inline, damit es nicht eine neue Zeile beginnt und die Buttons damit nebeneinander stehen statt untereinander */
+  display: inline;
+}
+
+
+
+/* grid-container  */
+/* grid bestehend aus header, middle und footer, 8 gleich breite spalten */
+.grid-container {
+  display: grid;
+  grid-template-areas:
+    'header header header header header header header header'
+    'middle1 middle1 middle1 middle1 middle1 middle1 middle1 middle1'
+    'footer footer footer footer footer footer footer footer'; 
+  grid-template-columns: repeat(8, 1fr);
+}
+
+  /* festlegung von middl1 im grid */
+  .middle1 {
+    display: grid;
+    grid-area: middle1;
+  }
+
+  /* festlegung vom footer im grid */
+  footer {
+    display: grid;
+    grid-area: footer;
+  }
+
+
+
+/* header */
+/* verschönern des Headers, Festlegung im Grid im Bereich header */
+.header {
+  grid-area: header;
+  background-color: #6D6875;
+  height:80px;
+  width: 100%;
+  position:static;
+  top:0px;
+  left:0px;
+  margin:0px;
+  overflow: hidden;
+  align-items: center;
+  z-index:1000;
+  display: flex;
+}
+
+  /* positionieren und gestalten des Logos */
+  #logo{
+    border-radius: 10px;
+    display: flex;
+    margin-right: auto;
+    filter: invert(1);
+  }
+  
+  #logKnopf{
+    background-color: white;
+    color: #6D6875;
+    font-size: 20px;
+    padding: 20px 25px;
+    border-style: none;
+    border-radius: 50px;
+    position:absolute;
+    top:15px;
+    right:15px;    
+  }
+  
+  /* positionierung und darstellung der buttons (werden je nach einloggen-Status verändert) */
+  #loginButton {
+    display:inline-flex;
+    margin-left:auto;
+    padding: 15px 20px;
+    border-style: none;
+    border-radius: 50px;
+    position:absolute;
+    top:15px;
+    right:15px; 
+    background-color: white;
+    color: #6D6875;
+    font-family: Poppins;
+  }
+  
+  #logoutButton {
+    display:inline-flex;
+    padding: 15px 20px;
+    border-style: none;
+    border-radius: 50px;
+      position:absolute;
+      top:15px;
+      right:15px; 
+    background-color: white;
+    color: #6D6875;
+    font-family: Poppins;
+  }
+  
+  .navigation ul{
+    list-style-type: none;
+    text-align: center;
+    display: flex;
+  }
+  
+  .navigation ul li{
+    display:inline-flex;
+    margin: 0px 20px;
+  }
+  
+  .navigation ul li a{
+    display:block;
+    padding:15px ;
+    text-decoration: none;
+    color: white;
+    font-size: 20px;
+    text-align: center;
+    margin: 0 10px;
+    font-family: Montserrat;
+  }
+  
+  .navigation a:hover{
+    color: #FDE2E4;
+    font-weight: bold;
+    border-bottom: 1px solid white;
+    transition: 0.1s ease;
+  }
+  
+  .navigation a.active{
+    color: #FDE2E4;
+    font-weight: bold;
+    border-bottom: 1px solid white;
+  }
+  
+  #search{
+    display: flex;
+  }
+  
+  #searchbar{
+    display: flex;
+    padding: 10px 10px;
+    margin-right: 120px;
+    position:absolute;
+    top:15px;
+    right:15px;    
+  }
+  
+  .rund{
+    color: #FDE2E4;
+    font-family: Montserrat;
+    margin-right: 10px;
+    height: 30px;
+    border-radius: 25px;
+    border: 1px solid white;
+    background-color: transparent;
+  }
+  
+  .rund::placeholder{
+    color: #FDE2E4;
+    margin-left: 5px;
+  }
+
+
+
+/* Slideshow-Elemente sollen schwarzen Hintergrund haben, damit Bilder mit hoher Durchlässigkeit dunkler werden */
+.slideshowElemente{
+  background-color: black;
+  opacity: 1;
+}
+
+  /* stylen von Überschrift, Text und Bildern, Positionierung vom Text*/
+  .slideshowElemente .slideshowText h1{
+    font-family: Sitka Banner, sans-serif;
+    font-size: 55px;
+  }
+  
+  .slideshowElemente .slideshowText p{
+    font-size: 20px;
+    font-family: Open Sans, sans-serif;
+  }
+  
+  .slideshowElemente .slideshowText{
+    position: absolute;
+    color: white;
+    top: 20%;
+    text-align: center;
+    font-weight: lighter;
+    margin: 150px;
+  }
+  
+  .slideshowElemente .slideshowBilder{
+    margin-left: auto;
+    margin-right: auto;
+    width: 100%;
+    height: 600px;
+    background-size: cover;
+    opacity: 0.3;
+  }
+
+
+
+/* Festlegen als Flexbox und wie sich die Kindelemente anordnen sollen */
+.iconscontainer {
+  display: flex;
+  justify-content:space-around;
+  padding-bottom: 40px;
+}
+
+  /* fixe Größe der Icons */
+  .icons {
+    width: auto;
+    height: 120px;
+  }
+
+   /* In diesem Container sind die Frühstück, Nachtisch, Mittag & Abendessen Icons plaziert */
+  .iconscontainer p {
+    font-family: Open Sans, sans-serif;
+    color: #343d46;
+    text-align: center;
+  }
+
+
+
+/* Style loginMaske */
+/* stylen der loginMaske als flex container mit flex-richtung spalte */
+#loginMaske {
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: column;
+  margin: 20px;
+  padding: 10px;
+  background-color: white;
+  border-radius: 30px;
+  box-shadow: 2px 5px 10px 2px;
+  color: #293133;
+  width: auto;
+  height: auto;
+  border-radius: 20px;
+  text-align: center;
+}
+
+  /* stylen der überschriften in der eingabeMaske */
+  .ueberschriftenEingabe {
+    font-family: Sitka Banner, sans-serif;
+    text-align: left;
+    color: #293133;
+  }
+  
+  /* style der labels */
+  #loginMaske label{
+    font-family: Open Sans, sans-serif;
+    font-size: 15px;
+  }
+  
+  /* block Anzeige und abstand der frage */
+  #loginMaske #rolleFrage{
+    display: block;
+    margin: 5px;
+  }
+  
+  /* als block definiert, damit das error span darunter erscheint und nicht daneben */
+  #loginMaske #eingabe label {
+    display: block;
+  }
+  
+  /* checkboxen nebeneinander */
+  #einloggenAls div{
+    display: inline;
+  }
+  
+  /* flexcontainer mit den input und labels nebeneinander in einer reihe */
+  #inputEingabe{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+  }
+  
+  /* außenabstand */
+  #inputEingabe #eingabe{
+    margin: 5px;
+    margin-bottom: 10px;
+  }
+  
+  /* abstand der checkboxen mit label */
+  .loginRollen{
+    border-radius: 3px;
+    margin: 5px;
+    padding: 3px;
+  }
+  
+  /* style des anmelde-buttons */
+  #anmeldungButton{
+    border-radius: 10%;
+    font-family: Open Sans, sans-serif;
+    color: white;
+    background-color: #293133;
+    border: none;
+    border-radius: 15px;
+    padding: 10px 15px;
+  }
+
+  /* style des error elements bei ungültiger eingabe */
+  span.error {
+    font-family: Open Sans, sans-serif;
+    color: red;
+    font-size: 12px;
+    display: block;
+  }
+
+
+
+/* style der eingabe maske */
+#eingabeMaske{
+  margin:20px;
+  padding: 20px;
+  width: 500px;
+  background-color:white;
+  font-family: Open Sans, sans-serif;
+  font-size: 15px;
+  color: #293133;
+  border-radius: 30px;
+  box-shadow: 2px 5px 10px 2px;
+}
+
+/* inneres grid mit zwei spalten */
+.eingabeBoxA{
+  display: grid;
+  grid-template-columns: 110px auto;
+  margin: 10px;
+  border: 2px;
+}
+
+.eingabeBoxB{
+  display: grid;
+  grid-template-columns: 110px auto;
+  margin: 10px;
+  border: 2px;
+}
+
+.eingabeBoxC{
+  display: grid;
+  grid-template-columns: 110px auto;
+  margin: 10px;
+  border: 2px;
+}
+
+.eingabeBoxD{
+  display: grid;
+  grid-template-columns: 110px auto;
+  margin: 10px;
+  border: 2px;
+}
+
+.eingabeBoxE{
+  display: grid;
+  grid-template-columns: 110px auto;
+  margin: 10px;
+  border: 2px;
+}
+
+/* äußeres grid mit fünf reihen */
+.eingabeGrid{
+  display: grid;
+  grid-template-rows: auto auto auto auto auto;
+}
+
+
+  /* checkboxen inline nebeneinander */
+  #eingabeMaske #allergenCheckboxen div {
+    /* display: inline; */
+    border: 2px solid black;
+    border-radius: 3px;
+    margin: 5px;
+    margin-bottom: 5px;
+    margin-left: 0px;
+    padding: 3px;
+  }
+ 
+  
+  #eingabeMaske textarea{
+    width: auto;
+    length: auto;
+    min-height: 100px;
+    resize: none;
+    border-radius: 5px;
+  }
+  
+  /* style speichernButton */
+  #speichernButton{
+    border-radius: 10%;
+    font-family: Open Sans, sans-serif;
+    text-align: center;
+    color: white;
+    background-color: #293133;
+    border: none;
+    border-radius: 15px;
+    padding: 10px 15px;
+    width: 100px;
+  }
+
+  #selectable .ui-selecting {
+    background: #ccc;
+  }
+  #selectable .ui-selected {
+    background: #999;
+  }
+
+
+
+/* style des angebots */
+.angebot{
+  margin-top: 40px;
+  margin-bottom: 60px;
+}
+
+
+
+/* Styling der Datenbankobjekte */
+/* speisekarte als grid mit zwei spalten */
+.speisekarte {
+  display: grid;
+  align-content: center;
+  grid-template-columns: auto auto;
+  justify-content: center;
+}
+
+  /* stylen der einzelnen kindelemente */
+  .gericht {
+     width: auto;
+     padding: 20px;
+     position: relative;
+     margin: 10px;
+     background-color: #293133;  
+     box-shadow: 2px 5px 10px 2px;
+     border-radius: 50px;
+   }
+  
+  /* stylen der überschriften */
+  .gericht h2{
+    color: white;
+    font-family: Sitka Banner, sans serif;
+    font-size: 30px;
+    text-align: center;
+  }
+  
+  /* stylen der hintergrundbilder */
+  .bilder { 
+    /* damit das Bild das gesamte div bedeckt und nicht nach den vorgegebenen Maßen langgezogen wird */
+    background-size: cover;
+    position: relative;
+    width: 400px;
+    height: 280px;
+    border-radius: 50px;
+    /* bilder im Hintergrund etwas transparenter machen */
+    opacity: 0.3;
+    box-shadow: 2px 5px 10px 5px;
+     }
+  
+  /* stylen des texts */
+  .text {
+    position: absolute;
+    /* text vom objekt orientiert sich damit am übergeordneten div .gerichte  */
+    top: 20px;
+    /* text braucht durch absoluten wert eine konkrete angabe, um sich im div . gerichte anzuordnen */
+    width: 360px;
+    height: 250px;
+    text-align: center;
+    color: white;
+    font-family: Open Sans, sans-serif;
+    text-shadow: 2px 2px 4px black;
+    /* text schatten, damit sich text besser abhebt */
+    word-wrap: break-word;
+    padding: 15px;
+    border-radius: 50px;
+     overflow: hidden;
+  }
+
+  /* style ändern Button */
+  #ändernButton{
+    border-radius: 10%;
+    font-family: Open Sans, sans-serif;
+    color: #293133;
+    background-color: white;
+    border: none;
+    border-radius: 15px;
+    padding: 5px 15px;
+  }
+
+  /* style löschen Button */
+  #löschenButton{
+    border-radius: 10%;
+    font-family: Open Sans, sans-serif;
+    color:  #293133;
+    background-color: white;
+    border: none;
+    border-radius: 15px;
+    padding: 5px 15px;
+  }
+
+#dialog-confirm{
+  display: none;
+}
+
+
+
+/* anlegenContainer als flexbox */
+#anlegenContainer {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+  color: #c0c5ce;
+  margin-top: 30px;
+  color: #293133;
+  font-family: Open Sans, sans-serif; 
+}
+
+  /* style anlegen Button */
+  #anlegenButton{
+  border-radius: 10%;
+  font-family: Open Sans, sans-serif;
+  color: white;
+  background-color: #293133;
+  border: none;
+  border-radius: 15px;
+  padding: 10px 15px;
+}
+
+
+
+/*Tisch reservieren: Text & Button*/
+.container1{
+  display: flex;
+  flex-direction: column;
+  algin-items: center;
+  background-color: #293133;
+  width: 100%;
+  padding-bottom: 20px;
+  height: 250px;
+
+
+  
+}
+/* Farben & Positionierung der Tisch-reservieren Überschrift*/
+#tischüberschrift{
+  color: white;
+  font-family: Sitka Banner;
+  padding: 15px;
+  margin: 20px;
+  text-align: center;
+  font-size: 20px;
+}
+/* zentrieren des Tisch-reservieren Textes */
+.centered {
+  text-align: center;
+  padding-bottom: 15px;
+}
+/* Container des Tisch-reservieren Buttons */
+.button-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 20px;
+}
+/* Farben & Positionierung des Tisch-reservieren Buttons */
+.button-tisch{
+  background-color: white;
+  border: none;
+  color: #293133;
+  padding: 15px;
+  border-radius: 50px;
+  font-family: open sans;
+  text-align: center;
+}
+
+/* baustellenMaske stylen */
+#baustellenMaske{
+  text-align: center;
+  justify-content: center;
+  margin:20px;
+  padding: 20px;
+  width: auto;
+  background-color:white;
+  font-family: Open Sans, sans-serif;
+  font-size: 15px;
+  color: #293133;
+  border-radius: 30px;
+  box-shadow: 2px 5px 10px 2px;
+}
+
+.zurueckButton {
+  border-radius: 10%;
+  font-family: Open Sans, sans-serif;
+  color: white;
+  text-align: center;
+  background-color: #293133;
+  border: none;
+  border-radius: 15px;
+  padding: 10px 15px;
+  width: 80px;
+}
+
+/* Footer gestalten, richtig positionieren usw.*/
+footer{
+  color: white;
+  font-family: Montserrat;
+  text-align: center;
+  background-color: #6D6875;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  font-size: 16px;
+}
+
+/*Footer*/
+#footercontent{
+  margin: 10px;
+  float: left;
+}
+/*Footer -> Impressum*/
+.footer-content1{
+  text-align: left;
+  width: 30%;
+}
+
+/*Footer -> Öffnungszeiten*/
+.footer-content2{
+  text-align: center;
+  width: 30%;
+}
+
+/*Footer -> Socials*/
+.footer-content3{
+  text-align: right;
+  align-items: right;
+  width: 30%;
+}
+span.bold{
+  font-weight: bold;
+  font-size: 20px;
+}
+/*Instagram & TikTok Icon für den Footer*/
+#insta{
+  width: 50px;
+}
+
+#tiktok{
+  width: 50px;
+}
+
+
+

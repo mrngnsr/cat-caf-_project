@@ -1,0 +1,769 @@
+<!DOCTYPE html>
+<!-- ***************************************************************
+*    Diese Datei gehört zum  WebEng-Kurs an der HNU
+*    Copyright (c) by Bernice Welens & Maya Perschke
+******************************************************************** -->
+<html>
+
+<head>
+  <title>Unsere Katzen</title>
+  <link rel="stylesheet" href="style/stylesheet.css" type="text/css" />
+  <!-- Bestimme den vom Browser zu benutzenden Zeichensatz -->
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script type="text/javascript" src="../client-js/jquery-3.6.4.min.js"></script>
+  <script type="text/javascript" src="../client-js/jquery-validate-1.19.3.min.js"></script>
+  <script type="text/javascript" src="../client-js/jquery-extensions.js"></script>
+  <script type="text/javascript" src="../client-js/jquery-ui-1.13.2.custom/jquery-ui.js"></script>
+
+  <!--CSS-->
+  <link rel="stylesheet" href="../client-js/jquery-ui-1.13.2.custom/jquery-ui.css" />
+</head>
+
+<!-- Header-->
+<header class="header">
+  <a href="../index.html">
+    <img class="" id="logo" src="bilder/Logo2.svg" alt="Logo" width="80" height="80" />
+  </a>
+  <nav class="navigation">
+    <ul>
+      <li><a id="home" href="../index.html">Home</a></li>
+      <li><a id="speisekarte" href="../speisekarte/css_speiseplanFunktionierendMitAllem.html">Speisekarte</a></li>
+      <li><a id="uteam" href="../team/team.html">Team</a></li>
+      <li><a id="katzen" href="cattos/katzen-CRUD-aendern.html" class="active">Katzen</a></li>
+    </ul>
+  </nav>
+  <form id="search">
+    <input id="searchbar" class="rund" type="text" placeholder="Search...">
+  </form>
+  <button id="logKnopf" onclick="alert('loginMaske')">Login</button>
+</header>
+
+
+<body>
+  <div class="leererBlock"></div>
+  <!--Loginmaske-->
+  <div id="loginMaske" class="maske">
+    <form id="loginForm">
+      <div class="login-content">
+        <h2>Logge dich hier ein!</h2>
+      
+        <table id="tabelle">
+          <tr>
+            <td>
+              <label>Benutzername</label>
+            </td>
+            <td>
+              <input id="benutzername" name="benutzername" class="rund" type="text" placeholder="Gib Dein Benutzername ein" />
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <label>Passwort</label>
+            </td>
+            <td>
+              <input id="password" name="password" class="rund" type="password" placeholder="Gib Dein Passwort ein" />
+            </td>
+          </tr>
+          <tr>
+            <td></td>
+            <td>
+              <button type="button" class="button" id="loginButton" onclick="einloggen()">Login</button>
+            </td>
+          </tr>
+        </table>
+      </div>
+      <div class="loginImage">
+        <img src="bilder/pusheenlogIn.png" alt="pusheen" id="pusheenLogIn" />
+      </div>
+    </form>
+  </div>
+
+  <!--Head-->
+  <div id="container1">
+    <h1 class="item-header" id="hauptüberschrift">Unsere Katzen</h1>
+  </div>
+
+  <div class="item-main">
+    <p class="text1">"Tauchen Sie ein in die faszinierende Atmosphäre unseres Katzencafés und lassen Sie sich von
+      unseren charmanten Fellnasen verzaubern."
+    </p>
+    <div class="galerie">
+      <img src="bilder/gallerypic1.jpeg" alt="" class="galerie-item" />
+      <img src="bilder/gallerypic2.jpeg" alt="" class="galerie-item" />
+      <img src="bilder/gallerypic3.jpeg" alt="" class="galerie-item" />
+      <img src="bilder/gallerypic4.jpeg" alt="" class="galerie-item" />
+      <img src="bilder/gallerypic5.jpeg" alt="" class="galerie-item" />
+    </div>
+  </div>
+  <div id="empty"></div>
+  <!--Eingabemaske-->
+  <div id="eingabeMaske" class="maske">
+    <form id="eingabeForm" name="eingabeForm" action="javascript:">
+      <div id="table" class="table">
+        <div class="nameMain">
+          <div id="name1">
+            <label for="name">Name:</label>
+          </div>
+          <div id="name2">
+            <input type="text" id="nameEingabe" name="nameEingabe" placeholder="Name" />
+          </div>
+        </div>
+        <div class="genderMain">
+          <div id="gender1">
+            <label for="geschlecht">Geschlecht:</label>
+          </div>
+          <div id="gender2">
+            <fieldset>
+            <div id="eingabeGeschlecht" class="value">
+              <input for="Männlich" type="radio" id="männlich" name="geschlecht" value="Männlich" />
+              <label for="m">Männlich</label>
+              <input for="Weiblich" type="radio" id="weiblich" name="geschlecht" value="Weiblich" />
+              <label for="w">Weiblich</label>
+            </div>
+            </fieldset>
+          </div>
+        </div>
+        <div class="ageMain">
+          <div id="age1">
+            <label for="alter">Alter:</label>
+          </div>
+          <div id="age2">
+            <input type="number" id="alter" name="alter" min="0" placeholder="0" max="30" />
+          </div>
+        </div>
+        <div class="breedMain">
+          <div id="breed1">
+            <label>Rasse:</label>
+          </div>
+          <div id="breed2">
+            <input type="text" id="rasseEingabe" name="rasseEingabe" placeholder="Rasse" />
+          </div>
+        </div>
+          <div class="pictureMain">
+          <div id="picture1">
+            <label>Bild:</label>
+          </div>
+          <div id="picture2">
+            <input type="text" id="cover" name="bild" />
+          </div>
+        </div> 
+      <br/>
+      <div class="fieldsetMain">
+      <div id="fieldset">
+      <fieldset>
+        <legend>Persönlichkeit</legend>
+        <input type="checkbox" id="persönlichkeit1" name="persönlichkeit" value="kuschelig" />
+        <label for="kuschelig">kuschelig</label>
+        <br>
+        <input type="checkbox" id="persönlichkeit2" name="persönlichkeit" value="verspielt" />
+        <label for="verspielt">verspielt</label>
+        <br>
+        <input type="checkbox" id="persönlichkeit3" name="persönlichkeit" value="ängstlich" />
+        <label for="ängstlich">ängstlich</label>
+        <br>
+        <input type="checkbox" id="persönlichkeit4" name="persönlichkeit" value="ruhig" />
+        <label for="ruhig">ruhig</label>
+        <br>
+        <input type="checkbox" id="persönlichkeit5" name="persönlichkeit" value="aggressiv" />
+        <label for="aggressiv">aggressiv</label>
+        <br>
+        <input type="checkbox" id="persönlichkeit6" name="persönlichkeit" value="hyperaktiv" />
+        <label for="hyperaktiv">hyperaktiv</label>
+      </fieldset>
+      </div>
+      </div>
+      <div class="progressMain">
+        <div id="progressbar"></div>
+        <div id="bestaetigen">
+          <button id="speichern"class="button" type="submit">Bestätigen</button>
+        </div>
+      </div>
+      </div>
+    </form>
+  </div>
+
+  <!--Datenmaske-->
+  <div id="datenMaske" class="maske">
+    <div class="box1">
+    <h2> Diese Katzen sind hier Zuhause 🤍</h2>
+    </div>
+    <div class="box2">
+    <button class="admin button" onclick="wechselnMaske('eingabeMaske','anlegen')">
+      Anlegen
+    </button>
+    </div>
+  
+    <div id="datenMaskeZeilen" class="">
+        <!-- Hier werden die Daten erscheinen -->
+    </div>
+  </div>
+    
+    
+  <div id="dialog" title="Willst du die Katze wirklich löschen?">
+    <p><span class="ui-icon"></span></p>
+  </div>
+
+  <div class="leererBlock"></div>
+
+  <!--Adoption-->
+  <div id="adoptionText">
+    <h2 id="adoptionÜberschrift">Adoptiere eine Katze!</h2>
+    <div id="adoptionText">
+      <p id="adoptionsIntro">"Endecke Liebe in jeder Katze! Unsere bezaubernden Samtpfoten warten darauf,
+        dein Herz zu erobern. In unserem Katzencafé Cats'n Coffee haben Sie nicht nur die Möglichkeit, die Gesellschaft
+        unserer charmanten Katzen zu genießen, sondern auch die besondere Chance, eine dauerhafte Verbindung einzugehen.
+        Hier können Sie nicht nur Zeit mit unseren Samtpfoten verbringen, sondern auch eine Adoption in Betracht ziehen.
+        Entdecken Sie die Liebe und Freude, die eine adoptierte Katze in Ihr Leben bringen kann – bereichern Sie Ihr
+        Zuhause mit einem neuen, pelzigen Familienmitglied!</p>
+    </div>
+  </div>
+
+  <div class="grid">
+    <div class="item-head">
+      <p>In 3 Steps zum neuen Familienmitglied 🤍</p>
+    </div>
+    <div class="item-1">
+      <img class="item1" src="bilder/1.svg" alt="Step 1" />
+      <p class="item1">
+        Wähle deine Traumkatze.
+      </p>
+    </div>
+    <div class="item-2">
+      <img src="bilder/2.svg" alt="Step 2" />
+      <p>Verliebe dich.</p>
+    </div>
+    <div class="item-3">
+      <img src="bilder/3.svg" alt="Step 3" />
+      <p>
+        Adoptiere dein Glück.
+      </p>
+    </div>
+  </div>
+
+  <!--Kontaktformular-->
+  <div id="kontaktForm" class="kontaktMaske">
+    <h2 id="kontaktÜberschrift">Kontaktformular</h2>
+    <p style="text-align:center;">Fülle das Kontaktformular aus, um den ersten Schritt für die Adoption deines
+      zukünftigen Katzen-Familienmitglied zu machen. Gemeinsam schenken wir einer Samtpfote ein liebevolles Zuhause!</p>
+    <table id="tabelle">
+      <tr>
+        <td>
+          <label>Name</label>
+        </td>
+        <td>
+          <input class="rund" type="text" placeholder="Gib Deinen Namen ein" />
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <label>E-Mail</label>
+        </td>
+        <td>
+          <input class="rund" type="email" placeholder="Gib Deine Email an" />
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <label>Warum möchtest du </br>
+            unsere Katze adoptieren?</label>
+        </td>
+        <td>
+          <textarea class="rund" rows="5" cols="33" placeholder="max. 300 Zeichen"></textarea>
+        </td>
+        <td>
+          <a href="error-page.html">
+            <button class="button">Abschicken</button>
+          </a>
+        </td>
+        <td>
+          <img src="bilder/family.png" alt="" id="family" />
+        </td>
+      </tr>
+    </table>
+  </div>
+
+  <div class="leererBlock"></div>
+
+  <!--Verhaltensregeln-->
+  <div id="verhaltensregeln">
+    <h2 id="regelnÜberschrift">Für ein harmonisches Miteinander zwischen Mensch und Katzen</h2>
+    <table>
+      <tr>
+        <td>
+          Katzen bitte nicht füttern.
+          <div class="description">
+            Unsere Katzen bekommen hochwertiges Katzenfutter. Bei falscher Ernährung kann es zu gesundheitlichen
+            Problemen kommen.
+          </div>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          Gerne kannst du ohne Blitz fotografieren.
+          <div class="description">
+            Fotografiere unsere Katzen gerne nach Lust und Laune. Bitte verzichte dabei auf den Kamerablitz.
+          </div>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          Sei bitte geduldig mit den Katzen.
+          <div class="description">
+            Die Katzen müssen dich erstmal kennenlernen. Je entspannter du an die Sache herangehst, desto zutraulicher
+            sind auch die Samtpfoten.
+          </div>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          Genieße und erhalte die entspannte Atmosphäre.
+          <div class="description">
+            Verhalte dich ruhig in der Gegenwart der Katzen und versuche nicht hektisch zu werden. Wird es zu laut,
+            ziehen sich die Katzen oft zurück.
+          </div>
+        </td>
+      </tr>
+    </table>
+  </div>
+
+  <div id="pusheen">
+    <img src="bilder/pusheen_coffee.png" alt="pusheen_coffee" width="150" />
+  </div>
+
+  <div class="leererBlock"></div>
+</body>
+
+<!--Footer-->
+<footer>
+  <div class="footer-content1" id="footercontent">
+    <span class="bold"> Impressum</span><br>
+    Katzenstraße 33<br>
+    89077 Ulm<br>
+    Tel: 015218676<br>
+    E-Mail: info@cats-n-coffee.de<br>
+  </div>
+  <div class="footer-content2" id="footercontent">
+    <span class="bold"> Öffnungszeiten</span><br>
+    Montag bis Freitag: 8:00 - 18:00 Uhr<br>
+    Samstag, Sonn- und Feiertag: 8:00 - 14:00<br>
+  </div>
+  <div class="footer-content3" id="footercontent">
+    <span class="bold">Socials</span><br>
+
+    <img src="bilder/icons8-instagram.svg" alt="" id="insta" />
+    <img src="bilder/icons8-tick-tack.svg" alt="" id="tiktok" /><br>
+  </div>
+</footer>
+
+
+<script type="text/javascript">
+
+
+  function Katze(id, cover, name, geschlecht, alter, rasse, persönlichkeit) {
+    console.log(`Katze =${cover} mit =${id} mit name =${name}, und geschlecht =${geschlecht}, und alter =${alter},   
+      und rasse =${rasse}, und persönlichkeit =${persönlichkeit}`);
+    this.id = id;
+    this.cover = cover;
+    this.name = name;
+    this.geschlecht = geschlecht;
+    this.alter = alter;
+    this.rasse = rasse;
+    this.persönlichkeit = persönlichkeit;
+  }
+
+  var datenArray = new Array();
+
+
+    //Neu: Wird aus der Datenbank gelesen, nicht mehr dem Array
+    function lesenKatzeDB() {
+    console.log("lesenKatzeDB");
+    //Initialisiere Daten-Maske
+    $("#datenMaskeZeilen").empty();
+    //Lesen der Daten aus der Katzen Datenbanken
+    $.get("/katzen", function(data){
+      datenArray = data;
+    
+    // Schleife über das DatenArray
+    var katze = "";
+    for (var i = 0; i < datenArray.length; i++) {
+      //Button Bearbeiten und Löschen
+      katze = `<div class="wrap">
+                        ${erzeugenKatzeSpalten(datenArray[i])}
+                      
+                         <button class="admin worker button" onclick="wechselnMaske('eingabeMaske',${i})" 
+                         adminVisible="true" workerVisible="true">
+                          <img src="bilder/pencil-square.svg"/>
+                          </button>
+                        <button class="admin button" onclick="loeschenKatzeDB(${i})" adminVisible="true">
+                          <img src="bilder/trash.svg"/>
+                        </button>
+                   </div> `;
+      $("#datenMaskeZeilen").append(katze);
+       }
+     })
+    }
+
+  function erzeugenKatzeSpalten(objekt) {
+    console.log("erzeugenKatzeSpalten");
+    var katzeSpalten = "";
+
+    
+    katzeSpalten = `<div class="katzi">
+                        <div class="katzi-bild">
+                          <img src="${objekt.cover}" alt="Katze" height="200px"/>
+                        </div>
+                        <div class="katzi-name">
+                          <p>Name: ${objekt.name}</p>
+                          <p>Geschlecht: ${objekt.geschlecht}</p> 
+                          <p>Alter: ${objekt.alter}</p> 
+                          <p>Rasse: ${objekt.rasse}</p>
+                          <p>Persönlichkeit: ${objekt.persönlichkeit}</p>
+                      </div>
+                      </div>
+                       `
+    return katzeSpalten;
+  }
+
+  function anlegenKatzeDB() {
+    console.log("anlegenKatzeDB");
+    //Auslesen der Daten
+    var cover = $("#cover").val();
+    var name = $("#nameEingabe").val();
+    var geschlecht = $("#eingabeGeschlecht input:checked").val();
+    var alter = $("#alter").val();
+    var rasse = $("#rasseEingabe").val();
+    var persönlichkeit = $("#persönlichkeit").val();
+
+    var neueKatze = new Katze("",cover, name, geschlecht, alter, rasse, persönlichkeit);
+
+    //Einfügen der Katze in das Array
+    //datenArray.push(neueKatze);
+    $.post("/katzen", neueKatze, function(data){
+      lesenKatzeDB();
+      wechselnMaske("datenMaske");
+    });
+
+    //Initialisieren der Eingabemaske
+    $("#cover").val("");
+    $("#nameEingabe").val("");
+    $("#eingabeGeschlecht").val("");
+    $("#alter").val("");
+    $("#eingabeRasse").val("");
+    $("input[name='persönlichkeit']").prop("checked", false);
+
+  }
+  
+  //Neu: Ändern in der Datenbank
+  function aendernKatzeDB(index) {
+    console.log("aendernKatzeDB mit" + index);
+    
+    var cover = $("#cover").val();
+    var name = $("#nameEingabe").val();
+    var geschlecht = $("#eingabeGeschlecht input:checked").val();
+    var alter = $("#alter").val();
+    var rasse = $("#rasseEingabe").val();
+
+    //Leeres Array soll persönlichkeit speichern
+    var gewähltePersönlichkeit = [];
+    //JQuery, um Checkboxen mit name=persönlichkeit zu finden und selektiert die verschiedenen Checkboxen
+    $("input[name='persönlichkeit']:checked").each(function () { //each(function) ist eine anonyme funktion, damit jede checkbox ausgewählt     werden kann
+      //In der schleife wird die persönlichkeit dem Array hinzugefügt
+      gewähltePersönlichkeit.push($(this).val());
+    });
+
+    var geanderteKatze = new Katze("",cover, name, geschlecht, alter, rasse, gewähltePersönlichkeit);
+
+    //datenArray[index] = geanderteKatze;
+    $.put('/katzen/' + datenArray[index].id, geanderteKatze, function(data){
+      lesenKatzeDB();
+      wechselnMaske("datenMaske");
+      aktualisierenDOM();
+    });
+
+    $("#cover").val("");
+    $("#nameEingabe").val("");
+    $("#eingabeGeschlecht input").prop('checked', false);
+    $("#alter").val("");
+    $("#rasseEingabe").val("");
+    $("input[name='persönlichkeit']").prop('checked', false);
+  }
+
+  function loeschenKatzeDB(index) {
+    console.log("loeschenKatzeDB mit" + index);
+    //Sicherheitsabfrage
+    $("#dialog").html(`Möchtest du wirklich die Katze löschen?`);
+
+    $(function() {
+      $("#dialog").dialog({
+        resizable: false,
+        title: "Löschen",
+        height: "auto",
+        width: 400,
+        modal: true,
+        buttons: {
+          "Ja": function() {
+            $.delete("/katzen/" + datenArray[index].id, function(data){
+              aktualisierenDOM();
+              lesenKatzeDB();
+            })
+            .fail(function(data){
+              errorAlert("Löschen fehlgeschlagen", data.responseText);
+            });
+          
+            $(this).dialog("close");
+        },
+        Cancel: function(){
+           $(this).dialog("close");
+          }
+        }
+      });
+    });
+      
+  }
+
+  function wechselnMaske(sichtbareMaske,fall) {
+    console.log(`wechselnMaske auf ${sichtbareMaske}, fall=${fall}`);
+
+    $(".maske").hide();
+    $("#" + sichtbareMaske).show();
+    
+    //Anlegen und Ändern unterscheiden
+   if (typeof fall !== "undefined") {
+      if(fall =="anlegen"){
+        console.log("\t anlegen");
+        $("#eingabeMaske form").attr("action", "javascript:anlegenKatzeDB()");
+      }else {
+      $("#cover").val(datenArray[fall].cover);
+      $("#name").val(datenArray[fall].name);
+      $("#geschlecht").val(datenArray[fall].geschlecht);
+      $("#alter").val(datenArray[fall].alter);
+      $("#rasse").val(datenArray[fall].rasse);
+      $("#persönlichkeit").val(datenArray[fall].persönlichkeit);
+
+      $("#eingabeMaske form").attr("action", "javascript:aendernKatzeDB(" + fall + ")");
+    }
+  }}
+
+  //Fehler-Ausgabe
+  function errorAlert(type, data){
+    console.log('Fehlermeldung vom Server nach ${type}-Request: ${JSON.stringify(data).toString()}');
+    alert('Fehlermeldung vom Server nach ${type}-Request: ${JSON.stringify(data).toString()}');
+  }
+
+  function einloggen() {
+    console.log("Neu WebApp: einloggen");
+    //User loggt sich ein
+    var loggenDaten= {"user": $("#benutzername").val(),
+                     "password": $("#password").val()};
+    $.post("/login", loggenDaten, function(data){
+      //Asynchrone Funktion
+      console.log("WebApp: einloggen " + data);
+      if(data===true){
+        //Einloggen funktioniert
+        aktualisierenDOM();
+        wechselnMaske("datenMaske");
+      }else{
+        //Einloggen hat nicht funktioniert
+        alert("Falscher Benutzername oder Passwort!");
+      }
+    })
+    .fail(function(data){
+      errorAlert("POST (einloggen)", data.responseText);
+    });
+  }
+
+  
+
+  function ausloggen() {
+    console.log("Neu WebApp: ausloggen");
+    //Ausloggen
+    $.get("/logout", function(data){
+      console.log("WebApp: ausloggen" + data);
+      if(data===true){
+        //Ausloggen funktioniert      
+        aktualisierenDOM();
+        wechselnMaske("datenMaske");
+    }else{
+        //Ausloggen funktioniert nicht
+        alert("Fehler beim Ausloggen!");
+    }
+    });
+  }
+
+  //Version 1 Validierung von LoginMaske
+  function loginRules() {
+    console.log("Login-Validierungsregeln gesetzt");
+    
+    $("#benutzername").rules("add", {
+      required: true,
+      messages: {
+        required: "Gib bitte dein Benutzername ein!",
+
+      }
+    })
+    $("#password").rules("add", {
+      required: true,
+      minlength: 3,
+      messages: {
+        required: "Gib bitte dein Passwort ein!",
+        minlength: jQuery.validator.format("Dein Passwort muss mindestens {0} Zeichen lang sein!")
+      }
+    })
+  }
+
+
+  //Version 2 Validierung von EingabeMaske (Name und Katzenrasse)
+  $("#eingabeForm").validate({
+    errorElement: 'span',
+    rules:{
+      "nameEingabe":{
+        required:true,
+        minlength:2
+      },
+      "rasseEingabe":{
+        required:true,
+        minlength:5
+      }
+    },
+
+    messages:{
+      "nameEingabe":{
+        required: "Gib bitte einen Namen ein!",
+        minlength: "Der Name muss mindestens 2 Zeichen lang sein!"
+      },
+      "rasseEingabe":{
+        required: "Gib bitte eine Katzenrasse ein!",
+        minlength: "Die Rasse muss mindestens 5 Zeichen lang sein!"
+      }
+    }
+  });
+
+  function aktualisierenDOM() {
+    console.log("Neu WebApp: aktualisierenDOM");
+    //Login-Status ermitteln
+    var eingeloggt = false;
+    $.get("/service_istEingelogged", function(data){
+      console.log("WebApp: aktualisisrenDOM: "+ data);
+      eingeloggt=data;
+      //Aktualisieren des Logknopfs nach Login-Status
+      setzenLogKnopf(eingeloggt);
+      //Aktualisieren der Berechtigung nach Login-Status und Rolle
+      setzenBerechtigungen(eingeloggt);
+    });
+  }
+
+  function setzenLogKnopf(eingeloggt) {
+    console.log("Neu: setzenLogKnopf mit" + eingeloggt);
+
+    if (eingeloggt) {
+      console.log("\t eingeloggt");
+      //Logknopf wird geändert zu Ausloggen
+      $("#logKnopf").html("Logout")
+        .attr("onclick", "ausloggen()");
+
+    } else {
+      console.log("\t nicht eingeloggt");
+      //Logknopf wird geändert zu Loggen
+      $("#logKnopf").html("Login")
+        .attr("onclick", "wechselnMaske('loginMaske')");
+    }
+  }
+
+  function setzenBerechtigungen(eingeloggt) {
+    console.log("NEU: setzenBerechtigungen mit " + eingeloggt);
+
+    if (eingeloggt) {
+      console.log("\t eingeloggt");
+      //Welche Rolle hat der user?
+      $.get("/service_rollenAbfrage", function(rollen){
+        var rollenArray=rollen.toString().split(",");
+        
+        for(var i =0; i<rollenArray.length; i++){
+        $("." + rollenArray[i]).attr(rollenArray[i] + "Visible", true);
+      }
+        
+    })} else {
+      //User ist nicht als worker oder admin eingeloggt
+      $(".worker").attr("workerVisible", false);
+      $(".admin").attr("adminVisible", false);
+    }
+  }
+
+  //autocomplete-Funktion statt Selectmenu, da zu viele Optionen
+    //Array mit Vorschlägen
+    var breeds = ["Siamkatze", "Britisch Kurzhaar", "Ragdoll", "Perserkatze", "Bengalkatze", "Maine Coon", "Britisch Langhaar", 
+                  "Exotic Kurzhaar", "Scottish Fold", "Russisch Blau", "Thaikatze", "Balinese"];
+
+    $("#rasseEingabe").autocomplete({
+      source: breeds
+    });
+
+  //Ceckbox-Radio 
+  $(function(){
+    $("input[type=radio]").checkboxradio();
+    
+  });
+
+  //progressbar
+  $( function() {
+    $("#progressbar").progressbar({
+      value: 0
+    });
+
+    $("#eingabeInput").on("input", function(){
+      updateProgress();
+    });
+    $(":radio").on("click", function(){
+      updateProgress();
+    });
+        
+    $(":checkbox").on("click", function(){
+      updateProgress();
+    });
+
+    function updateProgress() {
+      //Logik für die Progressbar
+      //Tutorium
+      var max = 4;
+      var min = 0;
+
+      $(".eingabeInput").each(function(){if($(this).val()!==""){
+        min++;}
+          });;
+      $("progressbar").progressbar({value: progressValue});
+      
+      var progressValue = calculateProgressValue();
+      }
+
+      function calculateProgressValue(){
+        var filledInputs = $("input[type='text']").filter(function(){
+          return $(this).val().trim() !=="";
+        }).length;
+
+        filledInputs += $("input[type=text):checked, input[type=radio]:checked, input[type=checkbox]:checked").length;
+        
+        var totalInputs = $("input[type='text']").length + $("input[type='radio']").length +$("input[type='checkbox']").length;
+        var progressValue = (min/max)*100;
+        return progressValue;
+      }
+  } );
+  
+  
+    wechselnMaske("datenMaske");
+    lesenKatzeDB();
+
+  
+    //Initialisieren des Geschlechts bei Änderung
+    $("#eingabeGeschlecht input").prop("checked", false);
+    //Initialsieren des DOM mit dem Login-Status
+    aktualisierenDOM();
+    $("#loginForm").validate({
+      errorElement: 'span',
+    }); 
+   loginRules();
+  
+    
+  </script>
+
+</html>

@@ -1,0 +1,309 @@
+
+.vornametext{
+  font-size: 14px; !important
+}
+
+.nachnametext{
+  font-size: 14px; !important
+}
+
+.emailtext{
+}
+
+.altertext{
+}
+
+.mailtext{
+  
+}
+
+.telefontext{
+  
+}
+
+.zeiltext{
+  vertical-align: bottom;
+  font-size: 12px;
+}
+
+
+.inline{
+  margin-bottom: 20px;
+  background-color: #ffffffff;
+  padding-top: 20px;
+  padding-bottom: 20px;
+  width:95%;
+  border-radius: 10px;
+  display: inline-block;
+  margin: auto;
+}
+
+#bilddiv{
+  margin-bottom: 10px;
+}
+
+#namediv{
+  font-size: 17px;
+  margin-bottom: 0px;
+}
+
+#jobdiv{
+  font-size: 12px;
+  margin-bottom: 3px;
+}
+
+#maildiv{
+  font-size: 10px;
+}
+
+.buttondiv{
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+
+#anlegebutton{
+  margin: 10px;
+  background-color: white;
+  border: none;
+  border-radius: 5px;
+  color: black;
+  padding: 5px 10px;
+  text-align: center;
+  text-decoration: none;
+  font-size: 14px;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 10px;
+}
+
+.button{
+  background-color: #ffffff;
+  border: none;
+  border-radius: 5px;
+  color: black;
+  padding: 5px 10px;
+  text-align: center;
+  text-decoration: none;
+  font-size: 14px;
+  margin: 2px;
+}
+
+#datenMaskeZeilen{
+  display: grid; 
+  grid-template-columns: 1fr 1fr 1fr; 
+  grid-gap: 5px; 
+}
+
+
+header{
+  text-align: center;
+  background-color: #6D6875;
+  top:0px;
+  left:0px;
+  height: 80px;
+  margin: 0px;
+  width: 100%;
+  clear: both;
+  overflow: hidden;
+  display: flex;
+  z-index: auto;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.navigation li{
+  justify-content: space-between;
+  display:inline-flex;
+}
+
+
+.navigation ul li a{
+  display:block;
+  padding:15px ;
+  text-decoration: none;
+  color: white;
+  font-size: 20px;
+  font-weight: bold;
+  text-align: center;
+  margin: 0 10px;
+}
+
+
+
+#loginButton, #logoutButton{
+  background-color: white;
+  border-radius: 8px;
+  padding: 10px;
+  margin: 15px;
+  text-align: center;
+  color: black;
+  font-size: 20px;
+  text-decoration: none;
+
+}
+
+.maske{
+  margin-top: 40px;
+  margin-bottom: 40px;
+  background-color: #B5838D;
+  border-radius: 10px;
+  padding: 10px;
+  text-align: center;
+  color: black;
+  text-decoration: none;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.verwaltung, .aushilfe{
+  display: none;
+}
+
+#bewerbungsMaske{
+  font-size: 16px;
+  font-weight: bold;
+}
+
+#eingabeMaske{
+  font-size: 16px;
+  font-weight: bold;
+}
+
+#datenMaske{
+  border-radius: 10px;
+  padding: 10px;
+  text-align: center;
+  color: black;
+  font-size: 20px;
+  font-weight: bold;
+  text-decoration: none;
+  padding-bottom: 25px;
+}
+
+#bewerbungsForm{
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-gap: 5px;
+  font-size: 14px;
+  text-align: left;
+  background-color: white;
+  padding: 10px;
+  border-radius: 10px;
+}
+
+#bsubmit{
+  background-color: #B5838D;
+}
+
+#loginFormWrapper{
+  display: grid;
+  text-align: left;
+  margin-left: 30%;
+  margin-right: 30%;
+}
+
+#bgrund{
+  height: 150px;
+  margin-top: 20px;
+}
+
+#belement3{
+  margin-top: 20px;
+}
+
+#loginFormWrapper input{
+  float: right;
+}
+
+.indivbutton{
+  background-color:  #B5838D;
+  border: none;
+  border-radius: 5px;
+  color: white;
+  padding: 5px 10px;
+  text-align: center;
+  text-decoration: none;
+  font-size: 14px;
+  margin: 2px;
+}
+
+#floginbutton{
+  margin-top: 10px;
+  margin-left: auto;
+  margin-right: auto;
+  width: 100px;
+}
+
+#eingabeFormWrapper{
+  margin: auto;
+}
+
+#eingabeFormGrid{
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-gap: 5px;
+  font-size: 14px;
+  text-align: left;
+}
+
+#bewerbungsFormWrapper{
+  padding: 10px;
+}
+
+
+#bewerbungsMaske{
+  padding: 15px;
+}
+
+#personalimage{
+  border: 5px, solid, #000000ff;
+  border-radius: 10px;
+}
+
+footer{
+  margin-top: 30px;
+  color: white;
+  font-family: Montserrat;
+  text-align: center;
+  background-color: #6D6875;
+  top:0px;
+  left:0px;
+  width: 100%;
+  clear: both;
+  overflow: auto;
+  display: flex;
+  justify-content: space-between;
+  font-size: 16px;
+}
+#footercontent{
+  margin: 10px;
+  float: left;
+}
+
+.footer-content1{
+  text-align: left;
+}
+
+.footer-content3{
+  text-align: right;
+  align-items: right;
+}
+span.bold{
+  font-weight: bold;
+  font-size: 20px;
+}
+
+#insta{
+  width: 50px;
+}
+
+#tiktok{
+  width: 50px;
+}
+
+body{
+  background-color: white;
+}
+
+
+;
